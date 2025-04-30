@@ -1,0 +1,63 @@
+
+{% extends 'base.html' %}
+{% block body %}
+{% comment %}
+      <h1 class="title"> Welcome {{name}}</h1>
+      <p>Login at {{DateTime}}</p>
+
+        
+            {% with greeting="Good Morning" %}
+        <h1>{{greeting}}</h1>
+            {% endwith %}
+        {% endcomment %}
+
+        {% if hour > 12 and hour < 16 %}
+        <h4>Goog Afternoon<h4>
+        {% elif hour > 16 and hour < 24 %}
+        <h4>Good Evening</h4>
+        {% else %}
+        <h4>Good Morning</h4>
+        {% endif %}
+
+        {% if password %}
+        <h1>Books Details</h1>
+        <ul>
+            <li>Python</li>
+            <li>JS</li>
+            <li>C++</li>
+        </ul>
+        <h3>Books Author</h3>
+            <ol>
+                {% for a in author %}
+                <li>{{a}}</li>
+                {% endfor %}
+            </ol>
+
+        <table class="table table-bordered">
+            <thead>
+                <th>Sr.No</th>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Issued Book</th>
+            </thead>
+            <tbody>
+                {% for k,v in student.items %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>10{{k}}</td>
+                    <td>{{v.name}}</td>
+                    <td>{{v.issuedbook}}</td>
+                
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+        <div class="alert alert-danger">
+            <h1>Please take password then only books wiill be vision</h1>
+        </div>
+        {% endif %}
+
+{% endblock %}
+
