@@ -1,0 +1,26 @@
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('',views.index,name='index' ),
+    path("signup/", views.signup, name="signup"),
+    path("signin/", views.signin,name="signin"),
+    path("userlogout/", views.userlogout,name="userlogout"),
+    path("seller/", views.seller , name="seller"),
+    path("seller_payment/", views.seller_payment , name="seller_payment"),
+    path("searchproduct/", views.searchproduct , name='searchproduct'),
+    path("electronic_search/" , views.electronic_search , name='electronic_search'),
+    path("cloth_list/",views.cloth_list, name="cloth_list"),
+    path("shoes_list/",views.shoes_list,name="shoes_list"),
+    path("searchby_price_range/",views.searchby_price_range,name="searchby_price_range"),
+    path("sortbyprice/",views.sortbyprice,name="sortbyprice"),
+    path("productdetails/<int:productid>/",views.productdetails,name="productdetails"),
+    path("show_wishlist/",views.show_wishlist,name="show_wishlist"),
+    path("addtowishlist/<int:productid>/",views.addtowishlist,name="addtowishlist"),
+    path("removefromwishlist/<int:productid>/",views.removefromwishlist,name="removefromwishlist"),
+    path("showcart/",views.showcart,name="showcart"),
+    path("updateqty/<int:qv>/<int:productid>/",views.updateqty,name="updateqty"),
+    path("addtocart/<int:productid>/",views.addtocart,name="addtocart"),
+    path("removeproductcart/<int:productid>/",views.removeproductcart,name="removeproductcart"),
+    path("myprofile/",views.myprofile,name="myprofile"),
+    path("addprofiile/",views.addprofiile,name="addprofile"),
+]

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Amazon | Home{% endblock %}
+{% block body %}
+
+<!-- categories -->
+<div class="container-fluid text-center">
+    <div class="row">
+        <div class="col">
+            <img src="{% static 'images/appliances.png' %}" alt="" width="80px" height="70px">
+            <p><a href="{% url 'electronic_search' %}">Appliances</a></p>
+        </div>
+        <div class="col">
+            <img src="{% static 'images/fashion.png' %}" alt="" width="80px" height="70px">
+            <p><a href="{% url 'cloth_list' %}">Fashion</a></p>
+        </div>
+        <div class="col">
+            <img src="{% static 'images/beauty.png' %}" alt="" width="80px" height="70px">
+            <p><a href="">Beauty</a></p>
+        </div>
+        <div class="col">
+            <img src="{% static 'images/furniture.png' %}" alt="" width="80px" height="70px">
+            <p><a href="">Furtinure</a></p>
+        </div>
+        <div class="col">
+            <img src="{% static 'images/grocery.png' %}" alt="" width="80px" height="70px">
+            <p><a href="">Grocery</a></p>
+        </div>
+        <div class="col">
+            <img src="{% static 'images/travel.png' %}" alt="" width="80px" height="70px">
+            <p><a href="">Travel</a></p>
+        </div>
+        <div class="col">
+            <img src="{% static 'images/kitchen.png' %}" alt="" width="80px" height="70px">
+            <p><a href="">Ketchen</a></p>
+        </div>
+
+    </div>
+</div>
+
+<!-- main -->
+<div class="container-fluid">
+    <div class="row">
+        <!-- filter -->
+        <div class="col-md-2">
+            <div>
+                <h5>Search By Category</h5>
+                <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select categories
+                </button>
+                <ul class="dropdown-menu">
+                    {% for c in allcategory %}
+                        {% if c.name == "Electronics" %}
+                            <li><a class="dropdown-item" href="{% url 'electronic_search' %}">{{c}}</a></li>
+                        {% elif c.name == "cloths" %}
+                            <li><a class="dropdown-item" href="{% url 'cloth_list' %}">{{c}}</a></li>    
+                        {% elif c.name == "Shoes" %}
+                            <li><a class="dropdown-item" href="{% url 'shoes_list' %}">{{c}}</a></li>    
+                        {% else %}
+                            <li><a class="dropdown-item" href="#">{{c}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                </div>
+            </div>
+
+            <div class="mt--3">
+                <h5>Search By Price Range</h5>
+                <hr>
+                <form method="get" action="{% url 'searchby_price_range' %}">
+                    {% csrf_token %}
+                    <input type="number" name="min" placeholder="Min Price" class="form-control" required><br>
+                    <input type="number" name="max" placeholder="Max Price" class="form-control" required><br>
+                    <input type="submit" class="btn btn-danger" value="Submit">
+                </form>
+            </div>
+
+            <div class="mt--3">
+                <h5>Search By Price </h5>
+                <hr>
+                <a href="/sortbyprice/?sort=low_to_high">Low to high</a><br>
+                <a href="/sortbyprice/?sort=high_to_low">high to Low</a>
+            </div>
+
+        </div>
+
+        <!-- main content -->
+        <div class="col-md-10">
+            <!-- corousel -->
+            <div class="container-fluid mt-3">
+                <div class="row"></div>
+            </div>
+            <!-- cards -->
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    {% for x in messages %}
+                    <div class="alert alert-warning">
+                        {{x}}
+                    </div>
+
+                    {% endfor %}
+                    {% for x in allproducts %}
+                    <div class="col-md-3 mt-3">
+                        <div class="card text-center" style="width: 15rem;">
+                            {% if x.productimage_set.all %}
+                                <img src="{{x.productimage_set.all.0.image.url}}" alt="{{x.productname}}" width="100px" height="150px" class="card-img-top">
+                            {% else %}
+                                <p>Image not avalible</p>
+                            {% endif %}
+                            <div class="card-body">
+                                <div class="card-title">{{x.productname}}</div>
+                                <div class="card-text">{{x.description}}</div>
+                                <div class="card-text">{{x.category}}</div>
+                                <div class="card-text">Price:{{x.price}}</div>
+                                <a href="{% url 'productdetails' x.productid  %}" class="btn btn-primary">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

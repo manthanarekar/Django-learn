@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Amazon | SHowcard{% endblock %}
+{% block body %}
+
+<div class="conatainer">
+    <div class="container">
+    <div class="row">
+        {% for x in messages %}
+            <div class='text-center'>
+                <p class='alert alert-success'>{{x}}</p>
+            </div>
+        {% endfor %}
+        <div class="col-md-10">
+            <div class="row">
+                {% for product in cart_list %}
+                
+                    <div class="col-md-6 text-center">
+                    
+
+                        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                
+                                {% for x in product.productid.productimage_set.all %}
+                                <div class="carousel-item active">
+                                <img src="{{x.image.url}}" class="d-block w-100" width="100px" height="400px" alt="...">
+                                </div>
+                                {% endfor %}
+            
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                
+                </div>
+                <div class="col-md-6 ">
+                    <div class="card-header fw-bold">Prodcut Details</div>
+                
+                        <div class="card-body">
+                            <h5 class="card-text">Name: {{product.productid.productname}}</h5>
+                            <p class="card-text text-success fw-bold">Special Price</p>
+                            <p class="card-text">
+                            <strong>Rs: ₹{{product.productid.price}} &nbsp</strong>
+                            
+                            <del class="fw-bold">₹{{product.productid.price | add:product.productid.price }}&nbsp</del>
+                            <span class="text-success fw-bold">50% off</span>
+                            </p>
+                            <p class="card-text">{{product.productid.description}}</p>
+                        
+                            <p class="card-text fw-bold">Available Offers</p>
+                            <ul>
+                            <li>Bank offer 10% Debit/Credit</li>
+                            <li>Bank offer 50% Unlimited Cashback</li>
+                            <li>No cost EMI 3, 333/month</li>
+                            </ul>
+                        
+                            <p class="">
+                                Delivery by <strong class="text-success">{{future_date}} &nbsp</strong>|<span>&nbsp Free</span>
+                                <p>10 Days Return Policy</p>
+                            </p>
+
+                            <h3>
+                                <strong>QTY:</strong>
+                                <a href="{% url 'updateqty' 0 product.productid.productid %}"><button class="btn btn-danger">-</button></a>
+                                <input  type="number" class="text-center" value="{{product.qty}}" disabled style="width: 50px;">
+                                {% if product.qty < product.productid.qty_available %}
+                                <a href="{% url 'updateqty' 1 product.productid.productid %}"><button class="btn btn-success">+</button></a>
+                                {% else %}
+                                <button class="btn btn-danger" >Max</button>
+                                <small class="text-center">No more stock</small>
+                                {% endif %}
+                            </h3>
+                            
+                            <h3 class="card-text fw-bold">Avaliable Quantity: {{product.productid.qty_available}}</h3>
+
+
+                            {% if has_profile and has_address %}
+                            <a href="" class="btn btn-primary">Checkout</a>
+                            {% else %}
+                            <button class="btn btn-secondary" disabled >Checkout Unavailble</button>
+                            {% endif %}
+
+                            <a href="{% url 'removeproductcart' product.productid.productid %}" class="btn btn-danger">Remove</a>
+                            
+                            <br><br><br>
+                            
+                        </div>
+                
+                    </div>
+                    {% empty %}
+                    <div class="text-danger">
+                        <h5>your cart is empty </h5>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+            
+            
+                <div class="col-md-2">
+                    <div class="row">
+                        <h3 class="text-danger">Total Summary</h3>
+                        <h5>Total Items : {{totalitems}}</h5>
+                        <hr>
+                        <h5>Total Amount : {{totalamount}}</h5>
+                        {% if has_profile and has_address %}
+                        <a href="" class="btn btn-primary">Proceed to Checkout</a>
+                        {% else %}
+                        <button class="btn btn-secondary" disabled >Checkout Unavailble</button>
+                        {% endif %}
+
+                        {% if not has_profile %}
+                        <div class="alert alert-warning" >
+                            Plase <a href="{% url 'myprofile' %}" class='text-decotation-none'>Create your Profile</a>before check out
+                        </div>
+                        {% endif %}
+
+                        {% if not has_address %}
+                        <div class="alert alert-warning" >
+                            Plase <a href="" class='text-decotation-none'>Add your address</a>before check out
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+        </div>
+    
+        
+        </div>
+</div>
+
+{% endblock %}
